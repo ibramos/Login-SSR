@@ -1,5 +1,9 @@
+import 'babel-polyfill';
 import express from 'express';
+import { matchRoutes } from 'react-router-config';
+import Routes from './client/Routes';
 import renderer from './helpers/renderer';
+import createStore from './helpers/createStore';
 
 const app = express();
 
@@ -17,7 +21,16 @@ app.use(express.static('public'));
 
 // express serves as the middleware for all incoming HTTP requests which gets passed down to React Router to decide the outcome
 app.get('*', (req, res) => {
-  res.send(renderer(req));
+  const store = createStore();
+
+  // helps figure out what components to show on screen based on a given URL without actually having to render the application via react-router-config module
+  const promises = matchRoutes(Routes, req.path).map(
+    ({ route }) => (route.loadData ? route.loadData(store) : null)
+  );
+
+  Promise.all(promises).then(() => {
+    res.send(renderer(req, store));
+  });
 });
 
 app.listen(PORT, () => {
