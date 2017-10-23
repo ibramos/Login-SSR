@@ -9,7 +9,11 @@ class UsersList extends Component {
 
   renderUsers() {
     return this.props.users.map(({ id, name }) => {
-      return <li key={id}>{name}</li>;
+      return (
+        <li className="list-group-item" key={id}>
+          {name}
+        </li>
+      );
     });
   }
 
@@ -17,8 +21,8 @@ class UsersList extends Component {
     const listOfUsers = this.renderUsers();
     return (
       <div>
-        List of Users:
-        <ul>{listOfUsers}</ul>
+        <h1>List of Users:</h1>
+        <ul className="list-group">{listOfUsers}</ul>
       </div>
     );
   }

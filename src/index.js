@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import express from 'express';
 import { matchRoutes } from 'react-router-config';
+import proxy from 'express-http-proxy';
 import Routes from './client/Routes';
 import renderer from './helpers/renderer';
 import createStore from './helpers/createStore';
@@ -9,6 +10,15 @@ const app = express();
 
 const PORT = 3000;
 
+app.use(
+  '/api',
+  proxy('http://loginssrapi.herokuapp.com', {
+    proxyReqOptDecorator(opts) {
+      opts.headers['x-forwarded-host'] = 'localhost:3000';
+      return opts;
+    }
+  })
+);
 // serve client side output via webpack.client.js
 app.use(express.static('public'));
 
@@ -21,7 +31,7 @@ app.use(express.static('public'));
 
 // express serves as the middleware for all incoming HTTP requests which gets passed down to React Router to decide the outcome
 app.get('*', (req, res) => {
-  const store = createStore();
+  const store = createStore(req);
 
   // helps figure out what components to show on screen based on a given URL without actually having to render the application via react-router-config module
   const promises = matchRoutes(Routes, req.path).map(
