@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div className="jumbotron jumbotron-fluid">
       <div className="container">
-        <h1 className="display-3">Welcome to Login SSR!</h1>
+        <h1 className="display-3 text-center">Welcome to Login SSR!</h1>
       </div>
     </div>
   );

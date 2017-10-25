@@ -21,8 +21,8 @@ class UsersList extends Component {
     const listOfUsers = this.renderUsers();
     return (
       <div>
-        <h1>List of Users:</h1>
-        <ul className="list-group">{listOfUsers}</ul>
+        <h1 className="text-center">List of Users:</h1>
+        <ul className="list-group text-center">{listOfUsers}</ul>
       </div>
     );
   }
