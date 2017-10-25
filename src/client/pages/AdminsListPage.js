@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchAdmins } from '../actions';
+import { Helmet } from 'react-helmet';
 import requireAuth from '../components/hocs/requireAuth';
 
 class AdminsList extends Component {
@@ -18,10 +19,21 @@ class AdminsList extends Component {
     });
   }
 
+  head() {
+    return (
+      <Helmet>
+        <title>{`${this.props.admins.length} Admins Loaded`}</title>
+        <meta property="og:title" content="Admin List in Login SSR" />
+      </Helmet>
+    );
+  }
+
   render() {
     const listOfAdmins = this.renderAdmins();
+    const helmetInfo = this.head();
     return (
       <div>
+        {helmetInfo}
         <h1 className="text-center">List of Admins:</h1>
         <ul className="list-group text-center">{listOfAdmins}</ul>
       </div>
